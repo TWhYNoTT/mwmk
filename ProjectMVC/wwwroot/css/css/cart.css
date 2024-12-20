@@ -1,0 +1,235 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+
+.wrapper {
+    font-family: 'Poppins', sans-serif;
+    display: flex; /* Flexbox to align items */
+    align-items: center; /* Vertically align items */
+    justify-content: space-between; /* Space out buttons and number */
+    width: 120px; /* Set container width */
+    margin: 0 auto; /* Center the wrapper */
+    padding: 5px;
+    border: 1px solid #ddd; /* Optional: Add a border */
+    border-radius: 10px; /* Optional: Add rounded corners */
+}
+
+.minus, .plus {
+    width: 30px; /* Fixed width for buttons */
+    height: 30px; /* Fixed height for buttons */
+    display: flex; /* Center content inside buttons */
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%; /* Make buttons circular */
+    background-color: black;
+    color: white;
+    font-size: 16px; /* Adjust font size for the button text */
+    border: none; /* Remove default border */
+    cursor: pointer;
+}
+
+    .plus:hover,
+    .minus:hover {
+        background-color: white;
+        color: black;
+        border: 2px solid black;
+    }
+
+.num {
+    width: 40px; /* Fixed width for the number */
+    text-align: center; /* Center the number */
+    font-size: 16px; /* Adjust font size */
+    font-weight: bold;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: whitesmoke;
+}
+
+.container2 {
+    width: 100%;
+    justify-content: center;
+    margin: 30px auto;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+}
+
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: black;
+    font-weight: bold;
+    font-size: 30px;
+}
+
+.cart-table {
+    background-color: white;
+    /* margin: 30px auto; */
+    padding: 20px;
+    border-radius: 8px;
+    color: black;
+    width: 70%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    overflow-x: auto; /* Enable horizontal scroll for small screens */
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+th, td {
+    text-align: center;
+    padding: 10px;
+    border-bottom: 1px solid #ddd;
+}
+
+th {
+    background-color: #f5f5f5;
+    font-size: 16px;
+}
+
+.product-cell {
+    display: flex;
+    justify-content: center;
+}
+
+.product-cell img {
+    max-width: 80px;
+    height: auto;
+    border-radius: 4px;
+}
+
+td input[type="text"] {
+
+    text-align: center;
+   
+}
+td i{
+    cursor: pointer;
+}
+
+.coupon, .update-cart {
+    margin-top: 20px;
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.coupon input {
+    padding: 10px;
+    width: 200px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+}
+
+.coupon button, .update-cart {
+    background-color: black;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.coupon button:hover, .update-cart:hover {
+    background-color: white;
+    border: 1px solid black;
+    color: black;
+}
+
+.cart-totals {
+    /* margin: 20px auto; */
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    width: 25%;
+    height: 300px; /* تثبيت الطول */
+    min-height: 300px; /* أدنى ارتفاع لضمان الاتساق */
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    display: flex; 
+    flex-direction: column; 
+    justify-content: space-between; /* يضمن توزيع العناصر بالتساوي داخل الكارت */
+}
+
+.cart-totals h2 {
+    margin-bottom: 20px;
+    color: black;
+    font-size: 20px;
+}
+
+.totals {
+    flex-grow: 1; /* يسمح لهذا الجزء بأخذ المساحة المتبقية بين العناصر */
+}
+
+.totals p {
+    display: flex;
+    justify-content: space-between;
+    font-size: 16px;
+    margin: 10px 0;
+}
+
+.checkout {
+    background-color: black;
+    color: white;
+    padding: 12px 30px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 15px;
+    transition: background-color 0.3s;
+}
+
+.checkout:hover {
+    background-color: white;
+    border: 1px solid black;
+    color: black;
+}
+
+
+/* Responsive Design */
+@media (max-width: 768px) {
+    .cart-table {
+        width: 80%;
+    }
+
+    .cart-totals {
+        width: 90%;
+    }
+
+    table, th, td {
+        font-size: 14px;
+    }
+
+   
+
+    .product-cell img {
+        max-width: 50px;
+    }
+    .coupon button{
+        padding: 10px 10px;
+    }
+}
+
+@media (max-width: 576px) {
+    .cart-table, .cart-totals {
+        width: 100%;
+    }
+
+    table, th, td {
+        font-size: 12px;
+        padding: 5px;
+    }
+
+
+    .product-cell img {
+        max-width: 40px;
+    }
+    .checkout{
+        padding: 10px 20px;
+    }
+}

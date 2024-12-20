@@ -1,0 +1,74 @@
+﻿
+@page
+@model LoginModel
+@{
+    ViewData["Title"] = "Log in";
+}
+<link href="@Url.Content("~/css/css/login.css")" rel="stylesheet" />
+<link rel="preconnect" href="https://fonts.gstatic.com">
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;500;600&display=swap" rel="stylesheet">
+
+
+<div id="header-container"></div>
+<form id="account" method="post">
+    <h3>Login</h3>
+    <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+    
+    <label asp-for="Input.Email">Email</label>
+    <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com">
+    <span asp-validation-for="Input.Email" class="text-danger"></span>
+
+    <label asp-for="Input.Password">Password</label>
+    <div class="password-container">
+        <input asp-for="Input.Password" id="password"  type="password" class="form-control" autocomplete="current-password" aria-required="true" placeholder="password">
+        <i class="fa-regular fa-eye" id="hidePassword"></i>
+        <span asp-validation-for="Input.Password" class="text-danger"></span>
+  </div>
+
+
+    <div class="pas-con">
+        <div class="form-check">
+            <input asp-for="Input.RememberMe" type="checkbox" id="remember-me">
+            <label for="remember-me" asp-for="Input.RememberMe" class="remember">remember-me</label>
+        </div>
+        @* <a class="password-forget" id="forgot-password" asp-page="./ForgotPassword">Forgot your password?!</a>*@
+
+    </div>
+
+    <button type="submit" id="loginButton" class="login">Log In</button>
+    <div class="sin-bt"><a asp-page="./Register" asp-route-returnUrl="@Model.ReturnUrl"  id="signButton">SignUp</a></div>
+    
+</form>
+
+<script>
+    // Get references to all password inputs and their toggle icons
+    const togglePasswordHandler = (inputElement, iconElement) => {
+        iconElement.addEventListener('mousedown', () => {
+            inputElement.type = 'text'; // Show password
+            iconElement.classList.remove('fa-eye');
+            iconElement.classList.add('fa-eye-slash');
+        });
+
+        iconElement.addEventListener('mouseup', () => {
+            inputElement.type = 'password'; // Hide password
+            iconElement.classList.remove('fa-eye-slash');
+            iconElement.classList.add('fa-eye');
+        });
+
+        iconElement.addEventListener('mouseleave', () => {
+            inputElement.type = 'password'; // Hide password on mouse leave
+            iconElement.classList.remove('fa-eye-slash');
+            iconElement.classList.add('fa-eye');
+        });
+    };
+
+    togglePasswordHandler(
+        document.getElementById('password'),
+        document.getElementById('hidePassword')
+    );
+</script>
+
+@section Scripts {
+   
+    <partial name="_ValidationScriptsPartial" />
+}

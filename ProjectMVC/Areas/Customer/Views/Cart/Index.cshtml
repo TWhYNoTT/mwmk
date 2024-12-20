@@ -1,0 +1,16 @@
+﻿@model ShoppingCartVM
+<div id="cart-wrapper">
+    @await Html.PartialAsync("_CartWrapper", Model)
+</div>
+@section Scripts {
+    
+    <script>
+        $(document).ready(function () {
+            
+            if (@Json.Serialize(ViewBag.IsCartPage)) {
+                $('#floating-cart-button').hide();
+            }
+
+        });
+    </script>
+}

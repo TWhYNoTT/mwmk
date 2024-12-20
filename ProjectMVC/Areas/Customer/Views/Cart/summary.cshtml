@@ -1,0 +1,135 @@
+﻿@model ShoppingCartVM
+@using Microsoft.Extensions.Options
+@inject IOptions<Utilities.StripeData> Stripe
+@{
+    var taxRate = 0.01d; 
+    var tax = Model.OrderHeader.TotalPrice * taxRate;
+    var total = Model.OrderHeader.TotalPrice + tax;
+    ViewData["Title"] = "Order Summary";
+}
+<html>
+<head>
+    <link href="~/css/css/checkout.css" rel="stylesheet" />
+</head>
+<body>
+ 
+    <h2 style="font-weight: bold;
+    font-size: 30px;margin: 1%;">Checkout</h2>
+  
+    <div class="content-section">
+        <div class="billing-details">
+            <h2>Billing Details</h2>
+
+            <form asp-action="Summary" asp-controller="Cart" method="post" id="checkout-form">
+
+                <label for="firstName">Name <span class="required">*</span></label>
+                <input asp-for="OrderHeader.Name" type="text" id="firstName" placeholder="Enter Full Name" required>
+                <span asp-validation-for="OrderHeader.Name" class="text-danger"></span>
+
+                <label for="country">Country <span class="required">*</span></label>
+                <input asp-for="OrderHeader.Country" type="text" id="country" required>
+                <span asp-validation-for="OrderHeader.Country" class="text-danger"></span>
+
+                <label for="state">State <span class="required">*</span></label>
+                <input asp-for="OrderHeader.State" type="text" id="state" required>
+                <span asp-validation-for="OrderHeader.State" class="text-danger"></span>
+
+                <label for="city">City<span class="required">*</span></label>
+                <input asp-for="OrderHeader.City" type="text" id="city" required>
+                <span asp-validation-for="OrderHeader.City" class="text-danger"></span>
+
+                <label for="streetAddress">Address <span class="required">*</span></label>
+                <input asp-for="OrderHeader.Address" type="text" id="streetAddress" required>
+                <span asp-validation-for="OrderHeader.Address" class="text-danger"></span>
+
+                <label for="phone">Phone <span class="required">*</span></label>
+                <input asp-for="OrderHeader.Phone" type="tel" id="phone" required>
+                <span asp-validation-for="OrderHeader.Phone" class="text-danger"></span>
+
+            </form>
+
+        </div>
+        <div class="order-review">
+            <h2>Your Order</h2>
+            <table>
+                <tr>
+                    <th>Product</th>
+                    <th>Subtotal</th>
+                </tr>
+                @foreach (var item in Model.CartList)
+                {
+                    <tr>
+                        <td>@item.Product.Name</td>
+                        <td>@(item.Product.Price * item.Count) EGP</td>
+                    </tr>
+                }
+                <tr>
+                    <th>Subtotal</th>
+                    <td>@Model.OrderHeader.TotalPrice.ToString("F2") EGP</td>
+                </tr>
+                <tr>
+                    <th>Total</th>
+                    <td id="totalPrice">@total.ToString("F2") EGP</td>
+                </tr>
+            </table>
+            <div class="coupon">
+                <input id="couponCode" type="text" placeholder="Coupon code">
+                <button onclick="applyCouponBtn(this,@Model.OrderHeader.Id)">Apply Coupon</button>
+            </div>
+            <button type="button" id="submit-button">Place Order</button>
+        </div>
+    </div>
+
+
+    @section Scripts {
+        <partial name="_ValidationScriptsPartial" />
+        <script>
+            $(document).ready(function () {
+                $('#floating-cart-button').hide();
+
+                // Trigger form submission when the button is clicked
+                $('#submit-button').click(function () {
+                    $('#checkout-form').submit();
+                });
+            });
+
+            function applyCouponBtn(button, orderId) {
+
+                var couponCode = document.getElementById("couponCode").value;
+
+                if (!couponCode) {
+                    toastr.error("Please enter a coupon code.");
+                    return;
+                }
+                button.disabled = true;
+
+                $.ajax({
+                    url: "/Customer/Cart/ApplyCoupon",
+                    type: "POST",
+                    data: { orderId: orderId, couponCode: couponCode },
+                    success: function (response) {
+                        if (response.success) {
+                            console.log("1");
+                            toastr.success(response.message);
+                            $("#totalPrice").text(`${response.newTotal}`);
+                        } else {
+                            console.log("2");
+                            toastr.error(response.message);
+                        }
+                    },
+                    error: function (xhr, status, error) {
+                        console.log("3");
+                        var errorMessage = xhr.responseJSON ? xhr.responseJSON.message : error;
+                        toastr.error(errorMessage);
+                    },
+                    complete: function () {
+                        console.log("4");
+                        button.disabled = false;
+                    }
+                });
+            };
+
+        </script>
+    }
+</body>
+</html>

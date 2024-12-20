@@ -1,0 +1,276 @@
+@import url("https://fonts.googleapis.com/css?family=Oswald:400,500,600");
+@import url("https://fonts.googleapis.com/css?family=Roboto:400,500");
+
+body {
+    font-family: "Roboto", sans-serif;
+ font-weight: 400px;
+margin: 0px;
+/* scroll-behavior: smooth; */
+
+}
+.home-section {
+    background: url("../images/home.jfif") no-repeat center;
+    background-size: cover;
+    background-attachment: fixed; /* تثبيت الصورة */
+    height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: left;
+}
+
+.home-section2{
+    background: url("../images/5.avif" ) no-repeat center  ;
+    background-size:cover; 
+   height: 100vh;
+    display: flex;
+    align-items: center;
+    text-align: left;
+    position: relative;
+    z-index: -1;
+}
+
+
+.home-section2::before {
+    content:"";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 1;
+    
+}
+
+
+.home-content {
+    z-index: 2;
+    max-width: 500px;
+   position: relative;
+}
+
+.home-content h2 {
+    font-size: 3rem;
+    margin-bottom: 20px;
+    color: black;
+    
+ 
+}
+
+.home-buttons .btn {
+    margin-right: 10px;
+    padding: 10px 20px;
+}
+.discount{
+    background-color: black; 
+    width:30%; 
+    height:30%; 
+    font-size:26px;
+    text-decoration: none;
+    text-align: center;
+}
+.discount a{
+    color:white ;
+}
+.product-section {
+    position: relative;
+    width: 100%;
+    overflow: hidden;
+    padding: 10px 0;
+    margin-bottom: 50px;
+  }
+  .product-section h2{
+    font-size: 25px;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+  .product-container {
+    display: flex;
+    overflow-x: auto;
+    scroll-behavior: smooth;
+    padding: 0 20px;
+    flex-wrap: nowrap; /* لإجبار البطاقات على البقاء في صف واحد */
+  }
+  .product-card {
+    flex: 0 0  50%;
+    max-width: calc(20% - 15px);
+    position: relative;
+    margin:0 10px ;
+    border: 2px solid white;
+    border-radius: 5px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    transition: transform 0.2s;
+    overflow: hidden;
+    /* background-color:rgb(216, 215, 215); */
+    
+}
+.product-card:hover {
+    transform: scale(1.01);
+}
+
+.product-card img {
+    width: 100%;
+    height: auto;
+    border-radius: 5px 5px 0 0;
+}
+
+.overlay-box {
+    font-size: 12px;
+    position: absolute;
+    top: 2.5%;
+    right: 70%;
+    width: 60px;
+    height: 18px;
+    background-color:black;
+    border: 1px;
+    border-radius: 3px;  
+    
+}
+
+
+.overlay-box  p{
+    color:white; 
+}
+.love i {
+    position: absolute;
+    top: 2%;
+    left: 90%;
+    font-size:18;
+    color: black;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.active {
+    color: #f5d107;
+}
+
+.product-card h3 {
+    font-size: 16px;
+    padding: 10px 0;
+}
+
+.product-card p {
+    margin: 0 5px 5px;
+    color: black;
+}
+
+.price {
+    color: #333;
+    font-size: 16px;
+}
+
+.price del {
+    color: red;
+    font-size: 14px;
+    margin-right: 5px;
+}
+
+.stars span {
+    color: #f5d107;
+    margin: 4px 2px;
+    font-size: 18px;
+    justify-content: space-between;
+}
+
+
+  
+.product-container::-webkit-scrollbar {
+    display: none; /* إخفاء شريط التمرير التقليدي */
+  }
+  
+  .product-card {
+    flex: 0 0 24%; /* عرض ثابت للبطاقات */
+    margin: 0 10px;
+    background-color: #f9f9f9;
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    width: 200px;
+  }
+  
+  
+.scroll-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 24px;
+    padding: 10px;
+    z-index: 10;
+  }
+  
+  .left {
+    left: 0;
+  }
+  
+  .right {
+    right: 0;
+  }
+  
+ 
+  
+  
+@media (max-width: 768px) {
+    .home-section {
+        height: 30vh;}
+    .hero-content h1 {
+        font-size: 0.5rem;
+    }
+    .hero-content p {
+        font-size: 0.9rem;
+    }
+    .home-section{
+        background: url("../images/home.jfif") no-repeat center ;
+        background-size: cover; 
+        width: 100%;
+    }
+    .home-content h2 {
+        font-size: 1rem;
+        margin-bottom: 20px;
+        color: black;
+    }
+    .discount{
+        width:60%; 
+    height:35%;
+    }
+    .product-list {
+        flex-direction: column; 
+        align-items: center; 
+    }
+
+    .product-card {
+        flex: 0 0 80%; 
+        max-width: 100%;
+        
+        margin-bottom: 10px; 
+    }
+    .product-card p {
+        margin-left: 10px;
+        color: black;
+    }
+    .overlay-box{
+        right: 60%;
+        width: 70px;
+    }
+    .scroll-btn {
+     
+        top: 40%;
+        color: white;
+        border: none;
+        cursor: pointer;
+        font-size: 18px;
+        padding: 5px;
+        z-index: 10;
+      }
+      
+      .home-section2{
+        height: 30vh;
+      }
+
+}
+

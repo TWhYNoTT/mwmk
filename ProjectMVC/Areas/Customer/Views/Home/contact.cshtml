@@ -1,0 +1,75 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+
+
+
+<body class="bg-gray-50 text-black font-sans">
+    <div id="header-container"></div>
+
+    <!-- فقرة ترحيبية -->
+
+
+    <h1 class="text-3xl font-bold text-center mt-2 mb-2">Contact Us</h1>
+    <p class="text-center text-sm my-4 mx-auto max-w-2xl text-black mb-6 ">
+        نحن هنا لخدمتك وضمان حصولك على أفضل تجربة تسوق ممكنة. إذا كان لديك أي استفسار، ملاحظة، أو شكوى، فلا تتردد في التواصل معنا. فريقنا متواجد للرد على جميع استفساراتك ومساعدتك بأسرع وقت ممكن.
+    </p>
+    <div class="container mx-auto px-4 sm:px-8 lg:px-16">
+        <!-- Contact Info Section -->
+        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 text-center mb-8">
+            <div class="bg-black p-4 rounded-lg hover:shadow-lg">
+
+                <i class="fa-solid fa-phone text-2xl mb-2 text-white"></i>
+                <p class="text-sm text-white">+123 456 789</p>
+            </div>
+            <div class="bg-black p-4 rounded-lg hover:shadow-lg">
+                <i class="fas fa-envelope text-2xl mb-2 text-white"></i>
+                <p class="text-sm text-white">contact@example.com</p>
+            </div>
+            <div class="bg-black p-4 rounded-lg hover:shadow-lg">
+                <a href=""><i class="fab fa-whatsapp text-3xl mb-2 text-white"></i></a>
+                <p class="text-sm text-white">+123 456 789 </p>
+            </div>
+        </div>
+
+        <!-- Contact Form Section -->
+        <div class="bg-white p-6 rounded-lg shadow-lg" dir="rtl">
+            <form id="contactForm" asp-controller="Home" asp-action="AddUsermeesage" method="post">
+                <div class="mb-4">
+                    <label for="name" class="block text-sm font-semibold mb-1 text-black">الاسم الكامل</label>
+                    <input type="text" name="name" value="@ViewBag.Name"  id="name" class="w-full p-2 text-sm rounded bg-gray-100 text-black placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-300" placeholder="أدخل اسمك الكامل" required>
+                    <span class="text-danger">@ViewData["Error"]</span>
+                </div>
+
+                <div class="mb-4">
+                    <label for="email" class="block text-sm font-semibold mb-1 text-black">البريد الإلكتروني</label>
+                    <input type="email" name="email" value="@ViewBag.Email" id="email" class="w-full p-2 text-sm rounded bg-gray-100 text-black placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-300" placeholder="أدخل بريدك الإلكتروني" required>
+                    <span class="text-danger">@ViewData["Error"]</span>
+                </div>
+
+                <div class="mb-4">
+                    <label for="phone" class="block text-sm font-semibold mb-1 text-black">رقم الهاتف</label>
+                    <input type="text" name="phone" value="@ViewBag.Phone" id="phone" class="w-full p-2 text-sm rounded bg-gray-100 text-black placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-300" placeholder="أدخل رقم هاتفك" required>
+                    <span class="text-danger">@ViewData["Error"]</span>
+                </div>
+
+                <div class="mb-4">
+                    <label for="message" class="block text-sm font-semibold mb-1 text-black">الرسالة</label>
+                    <textarea name="message" id="message" rows="4" class="w-full p-2 text-sm rounded bg-gray-100 text-black placeholder-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-300" placeholder="اكتب رسالتك هنا" required>@ViewBag.Message</textarea>
+                    <span class="text-danger">@ViewData["Error"]</span>
+                </div>
+
+                <button type="submit" class="w-full bg-black text-white text-sm font-semibold py-2 rounded hover:bg-gray-100 hover:text-black transition duration-300">إرسال</button>
+            </form>
+        </div>
+
+
+    </div>
+
+    <!-- فقرة ختامية -->
+    <p class="text-center text-sm my-6 mx-auto max-w-2xl text-black">
+        ساعات العمل: نحن متواجدون لخدمتك من السبت إلى الخميس ، من الساعة 9:00 صباحاً حتى 6:00 مساءً.<br>نحن نقدر ثقتك بنا ونسعى دائمًا لتقديم أفضل خدمة ممكنة لك
+    </p>
+
+</body>

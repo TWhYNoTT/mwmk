@@ -1,0 +1,104 @@
+﻿ @model IEnumerable<Product>
+
+@{
+
+}
+
+
+@section Styles {
+    <link href="@Url.Content("~/css/css/shop.css")" rel="stylesheet" />
+
+}
+<body>
+
+
+    <div class="product-list">
+
+        @if (!ViewBag.NoFavorites)
+        {
+          @foreach (var product in Model) {
+            <div class="product-card" data-product-id="@product.Id">
+                <img src="~/@product.img[0]" alt="@product.Name">
+
+                <div class="love">
+                    <button class="heart-icon" onclick="toggleFavorite(@product.Id)">
+                        <i class="fa-solid fa-heart heart"></i>
+                    </button>
+                </div>
+                @if (product.Discount>0)
+                {
+                    <div class="overlay-box">
+                        <p style="color: white;">Sale(@product.Discount)%</p>
+                    </div>
+                    <p>@product.Name</p>
+                    <p class="price">
+                        <del>@(product.Price - (product.Price * (product.Discount / 100)))EGP</del>
+                        @product.Price EGP
+                    </p>
+                }
+                else
+                {
+                    <p>@product.Name</p>
+                    <p class="price">
+                        @product.Price EGP
+                    </p>
+                }
+
+            </div>
+            }
+        }
+        else
+        {
+                <div class="alert alert-info text-center">
+                    You haven't added any favorite products yet. Start exploring and add your favorites!
+                </div>
+         
+        }
+        <!-- المزيد من المنتجات هنا -->
+    </div>
+
+
+
+    <script>
+        function scrollLeftCustom() {
+            const container = document.querySelector('.product-container');
+            const cardWidth = container.querySelector('.product-card').offsetWidth;
+            container.scrollBy({
+                left: -cardWidth,
+                behavior: 'smooth'
+            });
+        }
+
+        function scrollRightCustom() {
+            const container = document.querySelector('.product-container');
+            const cardWidth = container.querySelector('.product-card').offsetWidth;
+            container.scrollBy({
+                left: cardWidth,
+                behavior: 'smooth'
+            });
+        }
+
+        function toggleFavorite(productId) {
+            // Perform an AJAX call to toggle the favorite status
+            $.ajax({
+                url: '/Customer/Home/ToggleFavorite', // Make sure this matches your controller route
+                type: 'POST',
+                data: { productId: productId },
+                success: function (response) {
+                    // Toggle the heart icon based on the response
+                    var heartIcon = $("button[onclick='toggleFavorite(" + productId + ")'] i");
+                    if (heartIcon.hasClass("fa-regular")) {
+                        heartIcon.removeClass("fa-regular fa-heart").addClass("fa-solid fa-heart");
+                    } else {
+                        heartIcon.removeClass("fa-solid fa-heart").addClass("fa-regular fa-heart");
+                    }
+                },
+                error: function (xhr, status, error) {
+                    console.error("Error toggling favorite:", error);
+                }
+            });
+        }
+    </script>
+
+
+</body>

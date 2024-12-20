@@ -1,0 +1,139 @@
+﻿@page
+@using Utilities
+@model RegisterModel
+@{
+    ViewData["Title"] = "Register";
+}
+
+<body>
+    <div id="header-container">
+    <section class="container-sign">
+        <header>SignUP</header>
+        <form id="registerForm" asp-route-returnUrl="@Model.ReturnUrl" method="post" class="form">
+             <div asp-validation-summary="ModelOnly" class="alert alert-danger" role="alert"></div>
+
+            <div class="input-box">
+                <label asp-for="Input.Name">Full Name</label>
+                    <input asp-for="Input.Name" class="form-control" autocomplete="username" aria-required="true" placeholder= "Name"/>
+                    <span asp-validation-for="Input.Name" class="text-danger"></span>
+            </div>
+
+            <div class="input-box">
+                <label asp-for="Input.Email">Email</label>
+                <input asp-for="Input.Email" class="form-control" autocomplete="username" aria-required="true" placeholder="name@example.com" />                 
+                <span asp-validation-for="Input.Email" class="text-danger"></span>
+             </div>
+
+            <div class="input-box">
+                <label asp-for="Input.Password">Password</label>
+                    <input asp-for="Input.Password" id="password" type="password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="Password" />
+                <i class="fa-regular fa-eye" id="hidePassword"></i>
+                <span asp-validation-for="Input.Password" class="text-danger"></span>
+             </div>
+
+           
+            <div class="input-box">
+                <label asp-for="Input.ConfirmPassword">Confirm Password</label>
+                <input asp-for="Input.ConfirmPassword" id="confirm-password" type="password" class="form-control" autocomplete="new-password" aria-required="true" placeholder="Confirm Password" />
+                <i class="fa-regular fa-eye" id="hideConfirmPassword"></i>
+                <span asp-validation-for="Input.ConfirmPassword" class="text-danger"></span>
+             </div>
+
+            <div class="column">
+                <div class="input-box">
+                    <label asp-for="Input.Phone">Phone Number</label>
+                    <input asp-for="Input.Phone" class="form-control" aria-required="true" placeholder="Phone" />
+                    <span asp-validation-for="Input.Phone" class="text-danger"></span>
+                </div>
+            </div>
+
+            <div class="input-box">
+                    <label asp-for="Input.City">City</label>
+                                <input asp-for="Input.City" class="form-control" autocomplete="address-level2" aria-required="true" placeholder="City" />
+                            
+                                <span asp-validation-for="Input.City" class="text-danger"></span>
+                            </div>
+
+            <div class="input-box">
+                    <label asp-for="Input.Address">Address</label>
+                <input asp-for="Input.Address" class="form-control" autocomplete="street-address" aria-required="true" placeholder="Address" />
+                              
+                                <span asp-validation-for="Input.Address" class="text-danger"></span>
+              </div>
+
+                            @if (User.IsInRole(SD.AdminRole))
+                            {
+
+                    <div class="role-cards-container">
+                        <h2 class="title">Choose Your Role</h2>
+                        <div class="role-card" data-role="Admin">
+                            <input type="radio" name="RoleRadio" value="@SD.AdminRole" id="roleAdmin" />
+                            <label for="roleAdmin">
+                                <div class="icon">👨‍💼</div>
+                                <h3>@SD.AdminRole</h3>
+                            </label>
+                        </div>
+                        <div class="role-card" data-role="Marketer">
+                            <input type="radio" name="RoleRadio" value="@SD.MarketerRole" id="roleMarketer" />
+                            <label for="roleMarketer">
+                                <div class="icon">📣</div>
+                                <h3>@SD.MarketerRole</h3>
+                            </label>
+                        </div>
+                        <div class="role-card" data-role="Customer">
+                            <input type="radio" name="RoleRadio" value="@SD.CustomerRole" id="roleCustomer" />
+                            <label for="roleCustomer">
+                                <div class="icon">👥</div>
+                                <h3>@SD.CustomerRole</h3>
+
+                            </label>
+                        </div>
+                    </div>
+
+                }
+
+                            <button id="registerSubmit" type="submit" class="btn btn-primary w-100 btn-lg">@((User.IsInRole(SD.AdminRole) ? "Create New User" : "Register"))</button>
+                        </form>
+                   
+</section>
+    </div>
+    </body>
+@section Styles {
+    <link href="@Url.Content("~/css/css/sign.css")" rel="stylesheet" />
+
+}
+@section Scripts {
+        <script>
+        // Get references to all password inputs and their toggle icons
+        const togglePasswordHandler = (inputElement, iconElement) => {
+            iconElement.addEventListener('mousedown', () => {
+                inputElement.type = 'text'; // Show password
+                iconElement.classList.remove('fa-eye');
+                iconElement.classList.add('fa-eye-slash');
+            });
+
+            iconElement.addEventListener('mouseup', () => {
+                inputElement.type = 'password'; // Hide password
+                iconElement.classList.remove('fa-eye-slash');
+                iconElement.classList.add('fa-eye');
+            });
+
+            iconElement.addEventListener('mouseleave', () => {
+                inputElement.type = 'password'; // Hide password on mouse leave
+                iconElement.classList.remove('fa-eye-slash');
+                iconElement.classList.add('fa-eye');
+            });
+        };
+
+        togglePasswordHandler(
+            document.getElementById('password'),
+            document.getElementById('hidePassword')
+        );
+        togglePasswordHandler(
+            document.getElementById('confirm-password'),
+            document.getElementById('hideConfirmPassword')
+        );
+        </script>
+
+    <partial name="_ValidationScriptsPartial" />
+}

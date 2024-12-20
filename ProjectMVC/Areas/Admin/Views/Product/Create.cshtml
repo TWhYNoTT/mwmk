@@ -1,0 +1,320 @@
+﻿@model Product
+
+@{
+
+    ViewBag.PageTitle = "Product Managment";
+    ViewBag.CardTitle = "Create Product";
+    Layout = "_DashboradLayout";
+}
+
+ <link href="@Url.Content("~/css/css/admin-addpro.css")" rel="stylesheet" />
+@* <h1>Create</h1> *@
+<!-- Content Section -->
+<div class="content">
+    <h1>Add New Product</h1>
+        <form method="post" id="product-form" enctype="multipart/form-data">
+        <!-- Left Section: Inputs -->
+        <div class="form-section">
+            <div class="form-group">
+                <label asp-for="Name">Product Name</label>
+                <input asp-for="Name" type="text" id="name" placeholder="Enter product name" required>
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Description">Description</label>
+                <textarea id="description" asp-for="Description" rows="4" placeholder="Write product description..."></textarea>
+                <span asp-validation-for="Description" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="SizeAndFit">Size and Fit</label>
+                <textarea id="size-fit" asp-for="SizeAndFit" rows="4" placeholder="Enter size and fit details..."></textarea>
+                <span asp-validation-for="SizeAndFit" class="text-danger"></span>
+            </div>
+           
+            <div class="form-group">
+                <label asp-for="Care">Care</label>
+                <textarea id="size-fit" asp-for="Care" rows="4" placeholder="Enter how to care for the product..."></textarea>
+                <span asp-validation-for="Care" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Addition_Formation">Additional Information</label>
+                <textarea id="additional-info" asp-for="Addition_Formation" rows="4" placeholder="Enter additional details..."></textarea>
+                <span asp-validation-for="Addition_Formation" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="TotalNumberOfPieces">Total Number Of Pieces</label>
+                <input type="text" id="total-num" asp-for="TotalNumberOfPieces" placeholder="Enter total number" required>
+                <span asp-validation-for="TotalNumberOfPieces" class="text-danger"></span>
+
+            </div>
+            <div class="form-group">
+                <label asp-for="NumberOfPiecesAvailable">Total Number Of Pieces Available</label>
+                <input type="text" id="total-num" asp-for="NumberOfPiecesAvailable" placeholder="Enter total number" required>
+                <span asp-validation-for="NumberOfPiecesAvailable" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Price">Price</label>
+                <input type="number" id="price" asp-for="Price" placeholder="Enter product price" required>
+                <span asp-validation-for="Price" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Discount">Discount (%)</label>
+                <input type="number" id="discount" asp-for="Discount" placeholder="Enter discount" min="0" max="100">
+                <span asp-validation-for="Discount" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CategoryId">Category</label>
+                <select id="category" asp-for="CategoryId" asp-items="ViewBag.CategorySelectList">
+                    <option disabled selected>Select Category</option>
+                    <span asp-validation-for="CategoryId" class="text-danger"></span>
+                </select>
+            </div>
+            <div class="form-group checkbox-group">
+                <input asp-for="CanBeGift" type="checkbox id="is-gift">
+                <label asp-for="CanBeGift">Mark as a gift</label>
+                <span asp-validation-for="CanBeGift" class="text-danger"></span>
+            </div>
+        </div>
+        <!-- Dynamic Input Sections -->
+        <div class="container" id="inputContainer1">
+            <button type="button" id="addInput1" class="add-btn">Add Size</button>
+            <div id="sizeList"></div>
+        </div>
+
+        <div class="container" id="inputContainer2">
+            <button type="button" id="addInput2" class="add-btn">Add Color</button>
+            <div id="colorList"></div>
+        </div>
+
+        @*<div class="from-group">
+            <label class="control-label"></label>
+            <input asp-for="Size" class="form-control" />
+            <span asp-validation-for="Size" class="text-danger"></span>
+        </div>
+
+        <div class="from-group">
+            <label asp-for="Color" class="control-label"></label>
+            <input asp-for="Color" class="form-control" />
+            <span asp-validation-for="Color" class="text-danger"></span>
+        </div>*@
+    <div class="image-section">
+                    <h2>Upload Product Images</h2>
+                    <br>
+                    <div class="image-container" id="imageContainer">
+                        <div class="image-box" draggable="true">
+                            <input type="file" accept="image/*" style="display: none;" onchange="updateImagePreview(event)" />
+                            <img src="/images/file-upload.png" alt="Click to upload" />
+                        </div>
+                        <div class="image-box" draggable="true">
+                            <input type="file" accept="image/*" style="display: none;" onchange="updateImagePreview(event)" />
+                            <img src="/images/file-upload.png" alt="Click to upload" />
+                        </div>
+                        <div class="image-box" draggable="true">
+                            <input type="file" accept="image/*" style="display: none;" onchange="updateImagePreview(event)" />
+                            <img src="/images/file-upload.png" alt="Click to upload" />
+                        </div>
+                        <div class="image-box" draggable="true">
+                            <input type="file" accept="image/*" style="display: none;" onchange="updateImagePreview(event)" />
+                            <img src="/images/file-upload.png" alt="Click to upload" />
+                        </div>
+                        <div class="image-box" draggable="true">
+                            <input type="file" accept="image/*" style="display: none;" onchange="updateImagePreview(event)" />
+                            <img src="/images/file-upload.png" alt="Click to upload" />
+                        </div>
+                    </div>
+                </div>
+                <input type="file" style="" name="files" multiple>
+
+        <div class="submit-btn-container">
+            <button type="submit" class="submit-btn">Add Product</button>
+            <a asp-action="index" asp-controller="Product" type="cancel" class="submit-btn">Cancel</a>
+        </div>
+
+    </form>
+</div>
+          
+@*
+            <div class="from-group">
+        <label asp-for="img" class="control-label"></label>
+        <input type="file" name="file" id="imgfile" class="form-control" onchange="fillimg(event);"/>
+    </div>
+
+       
+
+            <div class="from-group">
+        <input type="submit" class="btn btn-primary" value="Create" />
+     
+<div class="from-group">
+    <div class="container">
+        <img src="~/@Model.img" width="300px" height="300px">
+    </div>
+
+</div>
+<script src="~/lib/jquery-validation/dist/jquery"></script>
+
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script> *@
+
+@* لما بشغل الجزء بتاع البارشل  بيعمل
+client SIde validation  *@
+
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+    <script>
+
+     document.getElementById('product-form').addEventListener('submit', function (event) {
+    event.preventDefault(); // Prevent default form submission
+
+    const formData = new FormData(this); // Collect existing form inputs
+
+    // Collect sizes (if size-related functionality exists)
+    const sizes = [];
+    const sizeList = document.querySelectorAll('#sizeList .size-item input');
+    sizeList.forEach(input => {
+        if (input.value) {
+         formData.append('Size', input.value);
+        }
+    });
+   
+
+    // Collect colors (if color-related functionality exists)
+    const colors = [];
+    const colorList = document.querySelectorAll('#colorList .color-item input');
+    colorList.forEach(input => {
+        if (input.value) {
+            formData.append('Color', input.value);
+        }
+    });
+    // Collect image files
+    const fileInputs = document.querySelectorAll('.image-box input[type="file"]');
+ 
+    fileInputs.forEach((input) => {
+    if (input.files.length > 0) {
+        for (let i = 0; i < input.files.length; i++) {
+            const file = input.files[i];
+            if(file){
+            formData.append('files', file);
+        }}
+    }
+});
+  
+fetch('/Admin/Product/Create', {
+        method: 'POST',
+        body: formData
+    })
+        .then(response => {
+            if (response.ok) {
+                return response.json();
+            }
+           data.errors.forEach(error => toastr.error(error, 'Validation Error'));
+        })
+        .then(data => {
+               toastr.success(data.message, 'Success');
+        })
+        .catch(error => {
+                   toastr.error('An error occurred while submitting the form.', 'Error');
+           
+        });
+});
+// Function to update image preview
+function updateImagePreview(event) {
+    const fileInput = event.target;
+    const imgElement = fileInput.nextElementSibling; // Select the <img> element
+
+    if (fileInput.files && fileInput.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+            imgElement.src = e.target.result; // Update the image preview
+        };
+        reader.readAsDataURL(fileInput.files[0]);
+    }
+}
+
+// Allow image box clicks to trigger the hidden file input
+const imageBoxes = document.querySelectorAll('.image-box');
+imageBoxes.forEach(box => {
+    const fileInput = box.querySelector('input[type="file"]');
+    box.addEventListener('click', () => {
+        fileInput.click(); // Trigger the hidden file input
+    });
+
+    // Drag-and-drop functionality (optional)
+    box.addEventListener('dragstart', () => {
+        draggingElement = box;
+        box.classList.add('dragging');
+    });
+
+    box.addEventListener('dragend', () => {
+        draggingElement = null;
+        box.classList.remove('dragging');
+    });
+});
+
+
+// Handle dragover event
+imageContainer.addEventListener('dragover', function (event) {
+    event.preventDefault();
+    const draggingOverElement = event.target.closest('.image-box');
+    if (draggingOverElement && draggingOverElement !== draggingElement) {
+        const boxesArray = [...imageContainer.children];
+        const draggingIndex = boxesArray.indexOf(draggingElement);
+        const targetIndex = boxesArray.indexOf(draggingOverElement);
+
+        if (draggingIndex > targetIndex) {
+            imageContainer.insertBefore(draggingElement, draggingOverElement);
+        } else {
+            imageContainer.insertBefore(draggingElement, draggingOverElement.nextSibling);
+        }
+    }
+});
+// JavaScript to dynamically add and remove size and color items
+
+document.getElementById('addInput1').addEventListener('click', function () {
+    const sizeList = document.getElementById('sizeList');
+    const sizeItem = document.createElement('div');
+    sizeItem.classList.add('size-item');
+
+    const sizeInput = document.createElement('input');
+    sizeInput.type = 'text';
+    sizeInput.placeholder = 'Enter size';
+    sizeItem.appendChild(sizeInput);
+
+    const deleteButton = document.createElement('button');
+    deleteButton.textContent = 'X';
+    deleteButton.classList.add('delete-size-btn');
+    deleteButton.addEventListener('click', function () {
+        sizeList.removeChild(sizeItem);
+    });
+
+    sizeItem.appendChild(deleteButton);
+    sizeList.appendChild(sizeItem);
+});
+
+document.getElementById('addInput2').addEventListener('click', function () {
+    const colorList = document.getElementById('colorList');
+    const colorItem = document.createElement('div');
+    colorItem.classList.add('color-item');
+
+    const colorInput = document.createElement('input');
+    colorInput.type = 'text';
+    colorInput.placeholder = 'Enter color';
+    colorItem.appendChild(colorInput);
+
+    const deleteButton = document.createElement('button');
+    deleteButton.textContent = 'X';
+    deleteButton.classList.add('delete-color-btn');
+    deleteButton.addEventListener('click', function () {
+        colorList.removeChild(colorItem);
+    });
+
+    colorItem.appendChild(deleteButton);
+    colorList.appendChild(colorItem);
+});
+
+    </script>
+
+}

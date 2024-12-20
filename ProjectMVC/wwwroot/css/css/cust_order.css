@@ -1,0 +1,403 @@
+
+h1 {
+    color: black;
+    text-align: center;
+  font-weight: bold;
+margin-top: 10px;
+    /* margin-bottom: 30px; */
+}
+
+/* تنسيقات الجدول الرئيسي */
+.order-table {
+    width: 100%;
+    max-width: 800px;
+    background-color: #ffffff;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+   margin-bottom: 5px;
+}
+
+.order-table table {
+    width: 100%;
+    border-collapse:separate;
+    border: none;
+}
+
+/* تلوين العناوين */
+.order-table thead th {
+    background-color: black;
+    color: white;
+    padding: 12px;
+    
+    font-size: 1.0rem;
+    border: none;
+
+}
+
+.order-table tbody td {
+    padding: 10px;
+    text-align: center;
+    font-size: 0.9rem;
+    color: black;
+    cursor: pointer;
+}
+
+/* تمييز الصفوف */
+.order-table tbody tr{
+    background-color: #f3f3f3;
+}
+
+/* تنسيقات الجدول المتداخل */
+.nested-table {
+    width: 90%;
+
+    margin: 0 auto 15px;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+    overflow: hidden;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.5);
+    border: 1px solid black;
+}
+
+.nested-table th {
+    background-color: white;
+    color: #fff;
+    font-size: 0.8rem;
+    padding: 8px;
+    font-weight: normal;
+    border: none;
+}
+
+.nested-table td {
+    padding: 8px;
+    font-size: 0.8rem;
+    color: #555;
+}
+
+td i{
+    font-size: 18px;
+}
+.toggle-arrow {
+    margin-left: 5px;
+    font-size: 0.8rem;
+    transition: transform 0.3s ease;
+    color:black; /* إضافة تأثير الانتقال */
+}
+.rotated-down {
+    transform: rotate(180deg); /* السهم يتجه للأسفل */
+}
+.rotated {
+    transform: rotate(90deg); /* السهم يتجه لليمين */
+}
+
+
+.order-table {
+    width: 100%;
+    max-width: 800px;
+    background-color: #ffffff;
+    overflow: hidden;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    justify-content: center;
+    align-items: center;
+    margin: auto;
+}
+
+.details-row {
+    display: none;
+}
+
+/* الجدول المتداخل */
+.nested-table {
+    width: 100%;
+    margin: 15px 0;
+    background-color: #f9f9f9;
+    border-radius: 4px;
+}
+
+.nested-table th, .nested-table td {
+    padding: 8px;
+    text-align: center;
+}
+.hidden-form {
+    display: none;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    background-color:white;
+    color: black;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    padding: 20px;
+    z-index: 1000;
+    border-radius: 8px;
+    border: 1px solid black;
+  }
+ 
+  
+  .hidden-form h2 {
+    text-align: center;
+    margin-bottom: 15px;
+    font-weight: bold;
+    font-size:18px;
+  }
+  .hidden-form p{
+    direction: rtl;
+    font-size: 16px;
+    text-align: center;
+  }
+  .hidden-form form {
+    display: flex;
+    flex-direction: column;
+    gap:3px;
+   
+  }
+  
+  .hidden-form label {
+    display: block;
+    margin-bottom: 3px;
+    font-size: 14px;
+    margin-left: 25px;
+  }
+  
+  .hidden-form input {
+    display: block;
+    background-color: #f9f9f9;
+    margin-bottom: 8px;
+    margin-left: 25px;
+    padding: 6px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 14px;
+    width: 80%;
+  }
+  
+  .hidden-form button[type="submit"],
+  .hid-btn,
+  .hidden-form button#closeForm {
+    background-color: black;
+    color: white;
+    border: 1px solid black;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-left: 50px;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    width: 100px;
+  }
+  
+  .hidden-form button#closeForm:hover,
+  .hidden-form button[type="submit"]:hover,.hid-btn:hover {
+    background-color:white;
+    color: black;
+    border: 1px solid black;
+    transition: background-color 0.3s ease, color 0.3s ease;
+  }
+  
+  .hidden-form input[type="file"] {
+    margin-bottom: 10px;
+    padding: 5px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  .product-sizes{
+        direction: rtl;
+        
+  }
+  .sizes{
+color: black;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .size {
+ 
+    padding: 5px 10px;
+    border: 1px solid #ddd;
+    cursor: pointer;
+    background-color: #f0f0f0;
+    font-size: 14px;
+    margin: 12px 5px;
+}
+
+.size.selected {
+    border-color:black;
+    transform: scale(1.1); 
+    transition: transform 0.3s ease, border 0.3s ease;
+}
+
+  .popup {
+    display: none; /* Initially hidden */
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    /* background-color: rgba(0, 0, 0, 0.5); */
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+    font-weight: 700;
+  
+}
+.popup-content {
+    background-color: white;
+    padding: 10px;
+    color: black;
+    border-radius: 5px;
+    text-align: center;
+    border: 1px solid black;
+}
+.popup button {
+    margin: 20px;
+    background-color: black;
+    color: white;
+    outline: none;
+    border: none;
+    padding: 8Px;
+    border-radius: 10px;
+    width: 130px;
+}
+.popup button:hover{
+    background-color:white;
+    border: 1px solid black;
+    color: black;
+}
+  
+/* تنسيقات الجدول الأساسي */
+@media (max-width: 768px) {
+    .order-table, .nested-table {
+        width: 90%; /* تصغير عرض الجدول */
+    }
+
+    .order-table thead th, 
+    .order-table tbody td, 
+    .nested-table th, 
+    .nested-table td {
+        font-size: 0.8rem; /* تقليل حجم الخط */
+        padding: 6px; /* تصغير المسافات الداخلية */
+    }
+
+    .order-table {
+        max-width: 100%; /* توسيع الجدول ليناسب الشاشة */
+        /* margin: 0 auto; */
+    }
+}
+
+/* تنسيقات للشاشات الأصغر من 480px */
+@media (max-width: 480px) {
+    .order-table, .nested-table {
+        width: 100%; /* توسيع الجدول ليملأ العرض */
+    }
+
+    .order-table thead th, 
+    .order-table tbody td, 
+    .nested-table th, 
+    .nested-table td {
+        font-size: 0.7rem; /* تقليل حجم الخط أكثر */
+        padding: 4px; /* تقليل المسافات الداخلية */
+    }
+
+    .hidden-form {
+        width: 90%; /* تصغير عرض الفورم */
+        padding: 15px;
+    }
+
+    .hidden-form h2 {
+        font-size: 16px; /* تقليل حجم العنوان */
+    }
+
+    .hidden-form label, 
+    .hidden-form input, 
+    .hidden-form button {
+        font-size: 12px; /* تقليل حجم النصوص والأزرار */
+    }
+
+    .popup-content {
+        padding: 10px; /* تقليل مساحة المحتوى */
+    }
+
+    .popup button {
+        width: 100px; /* تقليل عرض الأزرار */
+        font-size: 12px;
+    }
+    .hidden-form button[type="submit"],
+  .hid-btn,
+  .hidden-form button#closeForm {
+    margin-left: 30px;
+  }
+}
+/* تعديل الجدول عند فتح القائمة */
+.order-table.shifted {
+    margin-top: 150px; /* تعديل المسافة للأسفل عند فتح القائمة */
+    transition: margin-top 0.3s ease; /* تأثير الانزلاق */
+}
+
+
+/* تنسيق أيقونة البار */
+.bar-icon {
+    position: fixed;
+    top: 80px;
+    left: 20px;
+    font-size: 24px;
+    cursor: pointer;
+    z-index: 1000;
+  color: black;
+    /* color: white; */
+    padding: 8px;
+    border-radius: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.bar-icon:hover {
+    background-color: white;
+    /* color: black; */
+}
+
+/* تنسيق القائمة الجانبية */
+/* القائمة الجانبية مخفية افتراضيًا */
+.sidebar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 250px;
+    height: 100%;
+    /* background-color: black; */
+    color: white;
+    display: none; /* إخفاء القائمة افتراضيًا */
+    flex-direction: column;
+    z-index: 999;
+    transition: all 0.3s ease;
+}
+
+.sidebar a {
+    text-decoration: none;
+    color: white;
+    padding: 10px 20px;
+    font-size: 16px;
+}
+
+/* عند فتح القائمة */
+.sidebar.active {
+    display: flex; /* إظهار القائمة */
+}
+
+@media (max-width: 768px) {
+    .bar-icon {
+        font-size: 20px; 
+        padding: 8px;
+    }
+
+    .sidebar {
+        width: 100px;
+   
+    }
+    .sidebar a {
+        font-size: 14px;
+        padding: 0;
+    }
+}

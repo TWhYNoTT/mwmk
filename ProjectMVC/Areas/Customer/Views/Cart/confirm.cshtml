@@ -1,0 +1,18 @@
+﻿@model int
+@section Styles {
+    <link href="@Url.Content("~/css/css/order-done.css")" rel="stylesheet" />
+
+}
+ <body>
+        <section>
+            <div class="confirmation-container">
+            <img src="@Url.Content("~/Images/OrderDoneConfirm.jpg")" alt="توصيل الطلب" class="confirmation-image">
+                <h1 class="head-tit">Your Order Done!</h1>
+        <h2>Your Order Number @Model Has Been Successfully Placed</h2>
+                <p class="tex">تم تاكيد طلبك بنجاح.</p>
+                <p class="tex">سيصل طلبك خلال <span id="delivery-time">3 أيام</span>...</p>
+                <p class="tex">سنقوم بالتواصل معك على الرقم الذى سجلت به.</p>
+            <a href="@Url.Action("Index","Home")" class="order_don">Go to Home </a>
+            </div>
+        </section>
+  </body>

@@ -1,0 +1,277 @@
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f4;
+/*    display: flex;*/
+    height: 100vh;
+}
+
+.main-container {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    overflow: hidden;
+}
+
+
+/* Main Content Section */
+.content {
+    flex: 1;
+    padding: 20px;
+    /*margin-left: 250px;*/ /* Offset content to the right of the sidebar */
+    overflow-y: auto;
+}
+
+h1 {
+/*    text-align: center;*/
+    margin-bottom: 20px;
+}
+
+form {
+    display: flex;
+    flex-direction: column; /* Change this to stack form sections vertically */
+    gap: 20px;
+}
+
+.form-section {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    font-weight: bold;
+    margin-bottom: 5px;
+    display: block;
+}
+
+input,
+select,
+textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+textarea {
+    resize: none;
+}
+
+.checkbox-group {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 15px;
+}
+
+.checkbox-group input {
+    width: 20px; /* حجم الـ checkbox */
+    height: 20px;
+    cursor: pointer;
+}
+
+.checkbox-group label {
+    font-size: 16px;
+    color: #333;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 5px;
+}
+
+.checkbox-group input:checked {
+    background-color: #28a745; /* اللون عند التحديد */
+    border-color: #28a745;
+}
+
+.checkbox-group input:focus {
+    outline: none; /* إزالة الخط الأزرق حول الـ checkbox عند التحديد */
+    box-shadow: 0 0 5px rgba(40, 167, 69, 0.5); /* تأثير ظل عند التحديد */
+}
+
+.checkbox-group input:hover {
+    background-color: #218838; /* لون عند المرور بالماوس */
+}
+
+.dynamic-container {
+    margin-bottom: 20px;
+}
+
+.input-box {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.input-box input {
+    flex: 1;
+    padding: 8px;
+    border: 1px solid #ddd;
+    border-radius: 5px;
+}
+
+.remove-btn {
+    margin-left: 10px;
+    padding: 5px 10px;
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.remove-btn:hover {
+    background-color: #c82333;
+}
+
+/* Image Upload Section */
+.image-section {
+    margin-top: 20px;
+}
+
+.image-container {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.image-box {
+    flex: 1 1 calc(20% - 10px);
+    height: 150px;
+    border: 2px dotted #ddd;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border-radius: 5px;
+    background-color: #f9f9f9;
+    cursor: pointer;
+}
+
+.image-box img {
+    max-width: 100%;
+    max-height: 100%;
+    border-radius: 5px;
+}
+
+.submit-btn-container {
+    display: flex;
+    gap: 10px;
+    margin: 30px; 
+    justify-content: center;/* المسافة بين الأزرار */
+}
+
+.submit-btn {
+    padding: 10px 20px;
+    margin: 20px;
+    background-color: black;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  
+    width: 150px;
+    justify-content: center;
+   
+}
+
+.submit-btn:hover {
+    background-color: white;
+    color: black;
+    border: 1px solid black;
+}
+
+
+/* Dynamic Section Styles */
+.container {
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-top: 20px;
+    flex-wrap: wrap;
+}
+
+
+.add-btn {
+    background-color: black;
+    width: 150px; /* Green color for Sizes */
+    padding: 6px 12px;
+    font-size: 14px;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-right: 10px;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+
+/* Hover Effects for Buttons */
+.add-btn:hover {
+    background-color: white;
+    color: black;
+    border: 1px,solid black;
+    /* transform: scale(1.05); */
+}
+
+/* Size and Color Item Styling */
+.size-item , .color-item {
+    display: flex;
+    align-items: center;
+    margin: 5px;
+    background-color: #f0f0f0;
+    padding: 5px 10px;
+    border-radius: 20px;
+    margin-right: 10px;
+}
+
+.delete-color-btn,.delete-size-btn{
+    background-color: #dc3545 ; /* Red color for delete button */
+    border-radius: 50%;
+    padding: 4px 8px;
+    font-size: 12px;
+    color: white;
+    border: none;
+    cursor: pointer;
+    width: 50px;
+    margin-left: 5px;
+    transition: background-color 0.3s;
+}
+
+.size-item button:hover, .color-item button:hover {
+    background-color: #c82333;
+}
+
+/* Responsive styling for small screens */
+@media (max-width: 768px) {
+    .main-container {
+        flex-direction: row;
+    }
+
+    .sidebar {
+        
+        width: 20%;
+        height: auto;
+        position: relative;
+    }
+
+    .content {
+        margin-left: 0;
+    }
+
+    .image-box {
+        flex: 1 1 calc(50% - 10px);
+    }
+}

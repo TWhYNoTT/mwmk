@@ -1,0 +1,187 @@
+﻿@model ShoppingCartVM
+
+    <link href="@Url.Content("~/css/css/cart.css")" rel="stylesheet" />
+   
+<body>
+<h1 style="font-size: 30px;font-weight: bold;"><i class="fas fa-shopping-cart" style="font-size: 25px;"></i>Cart</h1>
+<div class="container2">
+   
+        <div class="cart-table">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>ProductName</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Subtotal</th>
+                        <th>Color</th>
+                        <th>Size</th>
+                        <th> &nbsp;</th>
+
+                    </tr>
+                </thead>
+                <tbody>
+                @if (!Model.CartList.Any())
+                {
+                    <tr>
+                        <td class="product-cell">
+                            <img src="~/Images/product_not_found.png" />
+                        </td>
+                        <td><a href="#" class="product-name"></a></td>
+                        <td></td>
+                        <td>
+                            <div class="wrapper">
+                                <button class="minus" type="button">-</button>
+                                <span class="num">01</span>
+                                <button class="plus" type="button">+</button>
+                            </div>
+                        </td>
+                        <td>
+                        </td>
+                        <td></td>
+                        <td></td>
+                        <td><button class="btn btn-danger btn-sm remove"><i class="fa-solid fa-trash-can"></i></button></td>
+                    </tr>
+                }
+
+                else
+            {
+                   
+                        @foreach (var item in Model.CartList)
+                    {
+                        <tr>
+                            <td class="product-cell">
+                                <a href="@Url.Action("Details", "Home", new { area = "Customer", ProductID = item.ProductId })">
+                                <img src="~/@item.Product.img[0]" alt="@item.Product.Name">
+                                    </a>
+                            </td>
+                                <td><a href="@Url.Action("Details", "Home", new { area = "Customer", ProductID = item.ProductId })" class="product-name">@item.Product.Name</a></td>
+                            <td>@item.Product.Price.ToString("F2") EGP</td>
+                            <td>
+                                <div class="wrapper">
+                                    <button class="minus minusfunc" type="button" data-cart-id="@item.ID">-</button>
+                                    <span class="num" value="@item.Count">@item.Count</span>
+                                    <button class="plus plusfunc" type="button" data-cart-id="@item.ID">+</button>
+                                </div>
+                            </td>
+                            <td>
+                                @((item.Count * item.Product.Price).ToString("F2")) EGP
+                            </td>
+                            <td>@item.Color</td>
+                            <td>@item.Size</td>
+                                <td><button class="btn btn-danger btn-sm remove" data-cart-id="@item.ID" onclick="sureRemove(@item.ID)"><i class="fa-solid fa-trash-can"></i></button></td>
+                        </tr>
+                    }
+               
+            }
+                </tbody>
+            </table>
+            <div class="coupon">
+                <input id="couponCode"  type="text" placeholder="Coupon code">
+                <button onclick="applyCouponBtn(this,@Model.TotalCarts.ToString("F2"))">Apply Coupon</button>
+            </div>
+        <button class="update-cart" onclick="window.location.href='@Url.Action("Home", "Home")'">Back to Shop</button>
+        </div>
+
+
+    <div class="cart-totals">
+        <h2>Cart totals</h2>
+        <div class="totals">
+            <p>Subtotal <span>@Model.TotalCarts.ToString("F2") EGP</span></p>
+                <p>Total <span id="totalPrice">@Model.TotalCarts.ToString("F2") EGP</span></p>
+        </div>
+        <button class="checkout" onclick="window.location.href='@Url.Action("Summary", "Cart")'">Checkout</button>
+    </div>
+</div>
+
+    
+</div>
+
+
+<script>
+
+        function applyCouponBtn(button, totalprice) {
+            console.log(totalprice)
+            var couponCode = document.getElementById("couponCode").value;
+
+            if (!couponCode) {
+                toastr.error("Please enter a coupon code.");
+                return;
+            }
+            button.disabled = true;
+
+            $.ajax({
+                url: "/Customer/Home/ApplyCoupon",
+                type: "POST",
+                data: { totalprice: totalprice, couponCode: couponCode },
+                success: function (response) {
+                    if (response.success) {
+                        toastr.success(response.message);
+                        $("#totalPrice").text(`${response.newTotal}`);
+                    } else {
+                        toastr.error(response.message);
+                    }
+                },
+                error: function (xhr, status, error) {
+                    var errorMessage = xhr.responseJSON ? xhr.responseJSON.message : error;
+                    toastr.error(errorMessage);
+                },
+                complete: function () {
+                    button.disabled = false;
+                }
+            });
+        };
+
+
+       function sureRemove(cartId) {
+            Swal.fire({
+                text: "Do you want to remove this item from your cart?",
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#0000',
+                cancelButtonColor: '#0000',
+                confirmButtonText: 'Remove',
+                cancelButtonText: 'Cancel'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    // Make an AJAX call to remove the item
+                    $.ajax({
+                        url: '/Customer/Cart/Remove', // Correct URL to the action
+                        type: 'POST',
+                        data: { cartId: cartId }, // Ensure the parameter name matches the action
+                        success: function (data) {
+                            if (data) {
+                                Swal.fire(
+                                    'Removed!',
+                                    'Your item has been removed.',
+                                    'success'
+                                );
+                                // Optionally refresh the cart
+                                $('#cart-content').html(data);
+                            } else {
+                                Swal.fire(
+                                    'Error!',
+                                    'Failed to remove the item.',
+                                    'error'
+                                );
+                            }
+                        },
+                        error: function () {
+                            Swal.fire(
+                                'Error!',
+                                'An error occurred while removing the item.',
+                                'error'
+                            );
+                        }
+                    });
+                }
+            });
+        }
+
+
+
+
+</script>
+
+</body>

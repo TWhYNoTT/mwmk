@@ -1,0 +1,102 @@
+﻿@{
+    Layout = "_Customer";
+}
+
+@section Styles {
+    <link href="@Url.Content("~/css/css/marketer.css")" rel="stylesheet" />
+
+}
+<body>
+
+    <div class="marketer-container">
+        <h2>مرحبًا،@ViewBag.Name</h2>
+        <div class="points-section">
+
+            <p>Total: <span id="value">@ViewBag.TotalProfit</span>EGP</p>
+        </div>
+
+        <div id="request-section">
+            <div id="accountInputContainer" style="display: none;">
+                <input type="text" id="accountNumber" placeholder="أدخل رقم الهاتف">
+            </div>
+            <button id="requestButton" onclick="handleRequest()">
+                إرسال المال
+            </button>
+        </div>
+
+        <!-- صورة التأكيد من الأدمن -->
+        <div class="admin-response" id="adminResponse">
+            <img id="confirmationImage" src="@(ViewBag.ProofPaymentImage != null ? ViewBag.Image : "/Images/nomoney.png")" alt="صورة التأكيد" />
+            <p id="confirmationText" style="display: none;">
+                تم تأكيد التحويل. شكرًا لتعاونك.
+            </p>
+        </div>
+    </div>
+
+
+    <script>
+        // النقاط وقيمة كل 100 نقطة
+        let points = 300;
+        const pointsToCurrencyRate = 0.5; // كل 100 نقطة = 50 جنيه
+        let value = points * pointsToCurrencyRate;
+
+        // تحديد حالة الزر
+        let isRequesting = true;
+
+        function handleRequest() {
+            if (isRequesting) {
+                // Show the input field
+                document.getElementById("accountInputContainer").style.display = "block";
+                document.getElementById("requestButton").textContent = "تأكيد الطلب";
+                isRequesting = false;
+            } else {
+                // Get the account number
+                const accountNumber = document.getElementById("accountNumber").value;
+                if (!accountNumber) {
+                    toastr.error("يرجى إدخال رقم هاتفك أو حساب الدفع.");
+                    return;
+                }
+
+                // Send the wallet number using Ajax
+                $.ajax({
+                    url: '/Customer/Marketer/SendMoney',
+                    method: 'POST',
+                    data: {
+                        walletNumber: accountNumber
+                    },
+                    success: function (response) {
+                        toastr.success(response.message || "تم إرسال الطلب بنجاح. سيتم إرسال المال إلى " + accountNumber);
+
+                        // Show waiting image
+                        document.getElementById("confirmationImage").src = "/images/clock.png";
+
+                        // Reset the button and hide input
+                        document.getElementById("accountInputContainer").style.display = "none";
+                        document.getElementById("requestButton").style.display = "none";
+                    },
+                    error: function () {
+                        toastr.error("حدث خطأ أثناء إرسال الطلب. يرجى المحاولة مرة أخرى.");
+                    }
+                });
+            }
+        }
+
+
+        // دالة لتحديث النقاط والمال بعد تأكيد الدفع من الأدمن
+        function confirmPayment() {
+            // خصم النقاط والمبلغ بعد التأكيد
+            points = 0;
+            value = 0;
+
+            // عرض التحديثات الجديدة
+            document.getElementById("points").textContent = points;
+            document.getElementById("value").textContent = value.toFixed(2);
+
+            // تحديث صورة التأكيد والنص
+            const confirmationImage = document.getElementById("confirmationImage");
+            const confirmationText = document.getElementById("confirmationText");
+            confirmationImage.src = "/Images/confirmation-image.jpg"; // ضع رابط صورة التأكيد
+            confirmationText.style.display = "block";
+        }
+    </script>
+</body>

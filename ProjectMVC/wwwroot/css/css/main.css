@@ -1,0 +1,105 @@
+body {
+  margin: 0;
+  display: grid;
+  background-color: whitesmoke;
+}
+.head{
+  margin: 8px;
+  font-weight: 600;
+  font-size: 24px;
+}
+.fa-gift{
+  color:darkred;
+  font-size: 25px;
+}
+
+.details{
+  font-size: 18px;
+  line-height: 35px;
+  margin: 15px;
+}
+.wheelOfFortune {
+  display: inline-block;
+  position: relative;
+  overflow: hidden;
+  place-items: center;
+  margin-bottom: 5vh; /* استخدام وحدات نسبية */
+}
+
+.pointer {
+ font-size: 22px;
+  font-weight:bolder;
+  margin: 8px;
+  color: darkred;
+
+}
+
+#wheel {
+  display: block;
+  max-width: 90vw; /* لجعل العجلة متجاوبة */
+  max-height: 90vh;
+}
+
+#spin {
+  font: 1em/0 sans-serif;
+  user-select: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position:absolute;
+  top: 44.6%; 
+  left: 50.1%;
+  transform: translate(-50%, -50%);
+  width: 3.5vw; /* استخدام عرض نافذة العرض */
+  height: 3vw; 
+  color: #ffffff;
+  box-shadow: 0 0 0 0.5vw currentColor, 0 0px 2vw 1vw rgba(0, 0, 0, 0.6);
+  border-radius: 50%;
+  transition: 0.8s;
+}
+
+#spin::after {
+  content: '';
+  position: absolute;
+  top: -1.5vw; 
+  border: 1.0vw solid transparent;
+  border-bottom-color: currentColor;
+  border-top: none;
+}
+
+
+
+
+
+@keyframes openLid {
+  from { transform: rotateX(0); }
+  to { transform: rotateX(-150deg); }
+}
+
+@keyframes bounce {
+  from { transform: translateY(0); }
+  to { transform: translateY(-2vw); }
+}
+
+/* نقاط إضافية لجعل التصميم متجاوبًا أكثر */
+@media (max-width: 768px) { 
+  #spin {
+    width: 8vw;
+    height: 8vw;
+  }
+
+ 
+}
+
+@media (max-width: 480px) {
+  #spin {
+    width: 13vw;
+    height: 13vw;
+  }
+
+
+  .pointer {
+    font-size: small;
+  }
+}

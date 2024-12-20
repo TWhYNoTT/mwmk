@@ -1,0 +1,336 @@
+/* Import Google font - Poppins */
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap");
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background: whitesmoke;
+ 
+}
+
+.container-sign {
+  background-color: white;
+  position: relative;
+  max-width: 700px;
+  width: 90%; 
+  padding: 25px;
+  border-radius: 8px;
+  box-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
+  margin: 6% auto;
+}
+
+.container-sign header {
+  font-size: 1.7rem;
+  font-weight: 600;
+  text-align: center;
+  background-color: white;
+  color: black;
+  border: none;
+  box-shadow: none;
+}
+
+.container-sign .form {
+  margin-top: 30px;
+}
+
+.form .input-box {
+  position: relative;
+  width: 100%;
+  margin-top: 20px;
+}
+
+input {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.input-box label {
+  color: #333;
+}
+
+.input-box i {
+  position: absolute;
+  top: 68%;
+  right: 15px;
+  transform: translateY(-50%);
+  cursor: pointer;
+  color: #999;
+  font-size: 1.0rem;
+}
+
+.form :where(.input-box input, .select-box) {
+  position: relative;
+  height: 50px;
+  width: 100%;
+  outline: none;
+  font-size: 1rem;
+  color: black;
+  margin-top: 8px;
+  border: 1px solid #ddd;
+  border-radius: 6px;
+  padding: 0 45px 0 15px; /* إضافة مساحة داخلية لليمين للأيقونة */
+}
+
+.input-box input:focus {
+  box-shadow: 0 1px 5px rgba(0, 0, 0, 0.2);
+}
+
+.form .column {
+  display: flex;
+  column-gap: 15px;
+}
+
+.address :where(input, .select-box) {
+  margin-top: 15px;
+}
+
+.select-box select {
+  height: 100%;
+  width: 100%;
+  outline: none;
+  border: none;
+  color: #707070;
+  font-size: 1rem;
+}
+
+.select-box select option:hover {
+  background-color: black;
+  color: white;
+}
+
+.form button {
+  height: 55px;
+  width: 100%;
+  color: #fff;
+  font-size: 1rem;
+  font-weight: 400;
+  margin-top: 30px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  background-color: black;
+  border-radius: 6px;
+}
+
+.form button:hover {
+  background-color: white;
+  border: 1px solid black;
+  color: black;
+}
+
+
+
+.content {
+  margin-left: 0;
+  transition: margin-left 0.3s;
+}
+.content.open {
+  margin-left: 250px;
+}
+
+
+/* الحاوية الرئيسية */
+.role-cards-container {
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 20px;
+  text-align: center;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* العنوان */
+.role-cards-container .title {
+  font-size: 24px;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #333;
+}
+
+/* الكروت */
+.role-card {
+  display: inline-block;
+  width: 280px;
+  margin: 10px;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s, box-shadow 0.3s, border 0.3s;
+  cursor: pointer;
+}
+
+.role-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+  border-color: #007bff;
+}
+
+/* المدخل */
+.role-card input[type="radio"] {
+  display: none;
+}
+
+/* عند التحديد */
+.role-card input[type="radio"]:checked + label {
+  border: 2px solid #007bff;
+  background: #e6f7ff;
+}
+
+/* المحتوى داخل الكرت */
+.role-card label {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px;
+  text-align: center;
+  transition: all 0.3s ease-in-out;
+}
+
+.role-card label .icon {
+  font-size: 40px;
+  color: #007bff;
+  margin-bottom: 10px;
+}
+
+.role-card label h3 {
+  font-size: 18px;
+  color: #333;
+  margin: 10px 0;
+}
+
+.role-card label p {
+  font-size: 14px;
+  color: #666;
+}
+
+/* عند التحديد - الأيقونة */
+.role-card input[type="radio"]:checked + label .icon {
+  color: #0056b3;
+}
+
+/* عند التحديد - النص */
+.role-card input[type="radio"]:checked + label h3 {
+  color: #0056b3;
+}
+
+/* Responsive */
+@media screen and (max-width: 768px) {
+  .container-sign {
+    padding: 10px; 
+    margin:5% auto;
+    
+    width: 60%;
+
+  }
+
+  .form .column {
+    flex-wrap: wrap; 
+
+  }
+
+  .form .input-box {
+    margin-top: 15px; 
+    width: 80%;
+    margin-left: 10px;
+  }
+
+  .form button {
+    margin-top: 20px; 
+    font-size: 0.9rem; 
+    width: 80%;
+  }
+  .sidebar {
+    position: absolute;
+  }
+  .sidebar a {
+    padding: 10px 5px;
+    text-decoration: none;
+    font-size: 14px;
+   
+  }
+  .form :where(.input-box input, .select-box) {
+    height: 40px;
+    font-size: 0.8rem;
+    margin-top: 7px;
+ 
+  }
+  .container-sign header {
+    font-size: 1.5rem;
+  }
+  .form button {
+    height: 40px;
+    font-size: 0.8rem;
+  }
+  .input-box label {
+   font-size: 14px;
+   margin-right: 10px;
+  }
+  
+  
+}
+
+/* Responsive for screens less than 550px */
+@media screen and (max-width: 570px) {
+  .container-sign {
+    padding: 8px;
+    width: 90%; 
+  
+  }
+
+  .container-sign header {
+    font-size: 1.2rem;
+  }
+
+  .form .column {
+    flex-direction: column; /* جعل العناصر في عمود */
+    /* gap: 10px; */
+  }
+
+  .form .input-box {
+    width: 100%; /* عرض المدخلات 100% */
+    margin-left: 0;
+  }
+
+  .form :where(.input-box input, .select-box) {
+    height: 35px;
+    font-size: 0.75rem;
+    padding: 0 10px; /* تقليل المساحة الداخلية */
+  }
+
+  .input-box label {
+    font-size: 12px;
+  }
+
+  .input-box i {
+    right: 10px;
+    font-size: 0.8rem;
+  }
+
+  .form button {
+    height: 40px;
+    font-size: 0.8rem;
+    width: 100%;
+  }
+
+  .sidebar {
+    top: 25%;
+    width:20%;
+    height: 80%;
+ 
+  }
+
+  .sidebar a {
+    font-size: 12px;
+    padding: 8px 10px;
+    font-size: 0.5rem;
+  }
+
+  .content.open {
+    margin-left: 200px;
+  }
+}

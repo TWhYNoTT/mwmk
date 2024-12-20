@@ -1,0 +1,361 @@
+﻿@model ShopingCart
+@using System.Linq
+
+@using System.Security.Claims
+@{
+    Layout = "_Customer";
+}
+
+@section Styles {
+    <link href="@Url.Content("~/css/css/shop.css")" rel="stylesheet" />
+
+}
+<body>
+<div class="product-container">
+    <div class="images">
+        <div class="product-images">
+                <img id="main-image" src="~/@Model.Product.img[0]" alt="~/@Model.Product.img[0]">
+        </div>
+        <div class="product-thumbnails">
+            @foreach (var img in Model.Product.img)
+            {
+                    <img src="~/@img" alt="~/@img" onclick="changeImage('~/@img')">
+            }
+        </div>
+    </div>
+
+    <div class="product-details">
+        <h2>
+            @Model.Product.Name &nbsp;
+            <p class="product-price">
+                <span class="original-price">EGP @Model.Product.Price</span>&nbsp; <span class="discounted-price">EGP @(Model.Product.Price - (Model.Product.Price * (Model.Product.Discount / 100)))  </span>
+            </p>
+            <h3 class="product-title">@Model.Product.Category.name</h3>
+        </h2>
+        <p class="product-discripion">
+            @Model.Product.Description
+        </p>
+        <!-- Color Options -->
+        <div class="product-colors">
+          
+            <div class="colors">
+                  @if (ViewBag.Colors != null && ViewBag.Colors.Count > 0) 
+                    {
+                @foreach (var color in ViewBag.Colors)
+                {
+                        <div style="background-color:@color;" class="color"></div>
+                }
+                    }
+            </div>
+        </div>
+        <!-- Size Options -->
+        <div class="product-sizes">
+            <div class="sizes">
+                   @if (ViewBag.Colors != null && ViewBag.Colors.Count > 0)  {
+                @foreach (var size in ViewBag.Sizes)
+                {
+                    <button class="size">@size</button>
+                }}
+            </div>
+        </div>
+
+        <!-- Quantity -->
+        <div class="product-quantity">
+            <span>الكميه : </span>
+            <div class="quantity-controls">
+                <button onclick="decreaseQuantity()">-</button>
+                <input type="number" id="quantity-input" min="1" asp-for="@Model.Count" value="@Model.Count" />
+                <button onclick="increaseQuantity()">+</button>
+            </div>
+        </div>
+
+        <!-- Subtotal -->
+        <p class="subtotal">المبلغ الكلى :  <span id="subtotal">EGP @(Model.Product.Price*Model.Count) </span></p>
+
+
+<form id="add-to-cart-form">
+                <input type="hidden" name="productId" value="@Model.Product.Id" />
+                <input type="hidden" name="color" id="selected-color" />
+                <input type="hidden" name="size" id="selected-size" />
+                <input type="hidden" name="quantity" id="selected-quantity" value="1" />
+    <button type="submit" class="add-to-cart">Add to Cart</button>
+</form>
+
+
+        <button class="add-to-cart" onclick="window.location.href ='@Url.Action("Summary", "Cart")'">
+            Proceed to Checkout
+        </button>
+    </div>
+</div>
+
+
+<section>
+    <hr>
+    <div class="overview">
+        <h3>المواصفات</h3>
+        <table class="specifications">
+            <tr>
+                <td class="head-td">الوصف</td>
+                <td class="highlight">
+               @Model.Product.Addition_Formation
+                </td>
+            </tr>
+            <tr>
+                <td class="head-td">المقاس</td>
+                <td class="highlight">@Model.Product.SizeAndFit</td>
+            </tr>
+            <tr>
+                <td class="head-td">العنايه بالمنتج</td>
+                <td class="highlight">@Model.Product.Care</td>
+            </tr>
+        </table>
+    </div>
+</section>
+
+
+
+
+<div class="review-section">
+    <h3>التقييمات والتعلقات</h3>
+    <div class="total-review">
+        <div class="average-rating">
+            <span class="average-score">@ViewBag.AverageRating.ToString("F1")</span>
+        </div>
+        <div class="rating-stars">
+            @for (int i = 1; i <= 5; i++)
+            {
+                if (i <= ViewBag.AverageRating)
+                {
+                    <i class="fas fa-star"></i>
+                }
+                else if (i - 0.5 <= ViewBag.AverageRating)
+                {
+                    <i class="fas fa-star-half-alt"></i>
+                }
+                else
+                {
+                    <i class="far fa-star"></i>
+                }
+            }
+        </div>
+    </div>
+
+    <div id="user-reviews">
+        <!-- Individual user reviews -->
+      @foreach (var review in Model.Product.Reviews.OrderByDescending(r => r.CreatedAt))
+            {
+        <div class="review-item">
+
+            <div class="review-header">
+                    @*<span class="user-name">محمد احمد</span>*@
+                    <span class="review-date">@review.CreatedAt.ToString("MMMM dd, yyyy")</span>
+            </div>
+            <div class="user-rating">
+                    @for (int i = 1; i <= 5; i++)
+                    {
+                        if (i <= review.Rate)
+                        {
+                            <i class="fas fa-star"></i>
+                        }
+                        else
+                        {
+                            <i class="far fa-star"></i>
+                        }
+                    }
+            </div>
+                <p class="user-comment">@review.Comment</p>
+
+        </div>
+            }
+
+    </div>
+
+</div>
+
+
+
+<div class="card">
+    <div class="row">
+     <div class="col-10">
+            <div class="comment-box ml-2">
+                <h4>أضف رأيك وتقييمك للمنتج</h4>
+
+                @if (TempData["ErrorMessage"] != null)
+    {
+        <div class="alert alert-danger">
+            @TempData["ErrorMessage"]
+        </div>
+    }
+    @if (TempData["SuccessMessage"] != null)
+    {
+        <div class="alert alert-success">
+            @TempData["SuccessMessage"]
+        </div>
+    }
+    @if (Model.Product.Reviews.Any(r => r.UserId == User.FindFirstValue(ClaimTypes.NameIdentifier)))
+    {
+                        <p class="alert alert-success">You have already reviewed this product.</p>
+    }
+    else
+    {
+         <form asp-action="AddReview" asp-controller="Home" asp-route-id="@Model.Product.Id" method="post">
+          
+                <div class="rating">
+                            @for (int i = 5; i >= 1; i--)
+                            {
+                                <input type="radio" id="star@(i)" name="rate" value="@i" required />
+                                <label for="star@(i)">☆</label>
+                            }
+                </div>
+                        <div class="comment-area">
+                            <textarea class="form-control" placeholder=" ما رأيك فى هذا المنتج؟!" id="comment" name="comment" rows="4" required maxlength="5000"></textarea>
+                        </div>
+                <div class="comment-btns mt-2">
+                    <div class="row">
+                        <div class="col-5">
+                            <div class="pull-left">
+                                <button type="reset" class="btn btn-success cancel btn-sm">Cancel</button>
+                                        <button type="submit" class="btn btn-success send btn-sm">Submit Review</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+
+    </form>
+
+    }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+    <script>
+    document.querySelectorAll('.color').forEach(colorElement => {
+        colorElement.addEventListener('click', () => {
+            document.getElementById('selected-color').value = colorElement.style.backgroundColor;
+        });
+    });
+
+    document.querySelectorAll('.size').forEach(sizeElement => {
+        sizeElement.addEventListener('click', () => {
+            document.getElementById('selected-size').value = sizeElement.textContent.trim();
+        });
+    });
+
+    function updateSubtotal(quantity) {
+        document.getElementById('selected-quantity').value = quantity; // Update hidden field
+        const subtotal = quantity * parseFloat(@Model.Product.Price);
+        document.getElementById('subtotal').textContent = subtotal.toFixed(2) + ' EGP';
+    }
+
+    function changeImage(newSrc) {
+            const resolvedSrc = newSrc.replace('~/', '/'); // Replace `~` with root path
+
+          const mainImage = document.getElementById('main-image');
+            mainImage.src = resolvedSrc;
+    }
+
+    const colors = document.querySelectorAll('.color');
+
+    colors.forEach(color => {
+        color.addEventListener('click', () => {
+            // إزالة الصفة "selected" من جميع الألوان
+            colors.forEach(c => c.classList.remove('selected'));
+
+            // إضافة الصفة "selected" للون المحدد
+            color.classList.add('selected');
+
+        });
+    });
+
+    // اختيار المقاس
+    const sizes = document.querySelectorAll('.size');
+
+    sizes.forEach(size => {
+        size.addEventListener('click', () => {
+            // إزالة الصفة "selected" من جميع المقاسات
+            sizes.forEach(s => s.classList.remove('selected'));
+
+            // إضافة الصفة "selected" للمقاس المحدد
+            size.classList.add('selected');
+
+        });
+    });
+
+    function decreaseQuantity() {
+        const quantityInput = document.getElementById('quantity-input');
+        let quantity = parseInt(quantityInput.value);
+        if (quantity > 1) {
+            quantity--;
+            quantityInput.value = quantity;
+            updateSubtotal(quantity);
+        }
+    }
+
+    function increaseQuantity() {
+        const quantityInput = document.getElementById('quantity-input');
+        let quantity = parseInt(quantityInput.value);
+        quantity++;
+        quantityInput.value = quantity;
+        updateSubtotal(quantity);
+    }
+
+
+    
+document.getElementById('add-to-cart-form').addEventListener('submit', function (event) {
+    event.preventDefault();
+    const formData = {
+        productId: document.querySelector('input[name="productId"]').value,
+        color: document.getElementById('selected-color').value,
+        size: document.getElementById('selected-size').value,
+        quantity: document.getElementById('selected-quantity').value,
+    };
+    // $.post('/Customer/Home/AddToCart',formData, function (data) {
+    //     if (data.success) {
+
+    //         toastr.success(data.message, 'Success');
+    //         updateFloatingCart();
+    //     }
+    //     if (xhr.status === 401) {
+    //         Redirect to the login page if unauthorized
+    //         window.location.href = '/Account/Login';
+    //     }
+    //     else {
+    //         toastr.error(data.message, 'Error');
+    //     }
+    // });
+            $.ajax({
+                url: '/Customer/Home/AddToCart',
+                type: 'POST',
+                data: {
+                    formData
+                },
+                success: function (response) {
+                    if (response.success) {
+                        toastr.success(data.message, 'Success');
+                        updateFloatingCart();
+                    } else {
+                        // Redirect to the login page if unauthorized
+                        window.location.href = '/Identity/Account/Login';
+                    }
+                },
+                error: function (xhr) {
+                    if (xhr.status === 401) {
+                        // Redirect to the login page if unauthorized
+                        window.location.href = '/Identity/Account/Login';
+                    } else {
+                        toastr.error(data.message, 'Error');
+                    }
+                }
+            });
+
+});
+
+
+    </script>
+
+
+
+</body>

@@ -1,0 +1,101 @@
+﻿@inject SignInManager<IdentityUser> SignInManager
+@{
+    var hasExternalLogins = (await SignInManager.GetExternalAuthenticationSchemesAsync()).Any();
+}
+
+
+<style>
+    /* تنسيق أيقونة البار */
+    .bar-icon {
+        position: relative; /* لتحديد مرجع القائمة */
+        display: inline-block;
+        font-size: 26px;
+        cursor: pointer;
+        color: black;
+        top:60px;
+        padding: 8px;
+        border-radius: 5px;
+        transition: background-color 0.3s ease;
+    }
+
+    .bar-icon:hover {
+        background-color: #f0f0f0;
+    }
+
+    /* تنسيق القائمة الجانبية */
+    .sidebar {
+        position: absolute;
+        top: 40px; /* تظهر أسفل الأيقونة */
+        left: 0;
+        width: 200px;
+        background-color: white;
+        color: black;
+        border: 1px solid #ddd;
+        box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        display: none; /* إخفاء القائمة افتراضيًا */
+        flex-direction: column;
+        z-index: 999;
+        border-radius: 5px;
+        padding: 5px 0;
+    }
+
+    .sidebar a {
+        text-decoration: none;
+        color: black;
+        padding: 10px 20px;
+        font-size: 16px;
+        display: block;
+    }
+
+    .sidebar a:hover {
+        background-color: #f0f0f0;
+    }
+
+    /* عند فتح القائمة */
+    .sidebar.active {
+        display: flex; /* إظهار القائمة */
+    }
+
+    /* تحسين العرض للشاشات الصغيرة */
+    @@media (max-width: 768px) {
+        .bar-icon {
+            font-size: 20px;
+            padding: 8px;
+        }
+
+        .sidebar {
+            width: 150px;
+        }
+
+        .sidebar a {
+            font-size: 14px;
+            padding: 8px 15px;
+        }
+    }
+</style>
+<body>
+    <div class="bar-icon" onclick="toggleSidebar()">
+        <i class="fa-solid fa-bars"></i>
+        <div class="sidebar" id="sidebar">
+            <a class="@ManageNavPages.IndexNavClass(ViewContext)" id="profile" asp-page="./Index"><i class="fa-regular fa-user"></i>&nbsp;My Profile</a>
+            <a href="#"><i class="fa-solid fa-bag-shopping"></i>&nbsp;Your Orders</a>
+            <a class="@ManageNavPages.ChangePasswordNavClass(ViewContext)" id="change-password" asp-page="./ChangePassword"><i class="fa-solid fa-key"></i>&nbsp;Change Password</a>
+            @if (User.IsInRole("Marketer"))//get me false why????
+           {
+            <a href="@Url.Action("Index", "Marketer", new { area = "Customer" })">
+                <i class="fa-solid fa-filter-circle-dollar"></i>&nbsp;Marketer
+            </a>
+
+           }
+
+        </div>
+    </div>
+
+
+    <script>
+        function toggleSidebar() {
+            const sidebar = document.getElementById("sidebar");
+            sidebar.classList.toggle("active");
+        }
+    </script>
+</body>

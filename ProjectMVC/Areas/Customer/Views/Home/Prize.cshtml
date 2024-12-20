@@ -1,0 +1,238 @@
+﻿@model List<Product>;
+
+
+@{
+    ViewData["Title"] = "Prize";
+}
+   @section Styles {
+    <link href="@Url.Content("~/css/css/main.css")" rel="stylesheet" />
+
+    }
+
+<html>
+
+<audio id="tick-sound" src="~/Audio/tick.mp3"></audio>
+
+<body>
+    <div id="header-container"></div>
+    <h1 align="center" class="head">
+        <i class="fa fa-gift"></i> Spin the Wheel of Fortune!
+        <i class="fa fa-gift"></i>
+    </h1>
+
+    <div align="center" class="details">
+        <p style="direction: rtl;">
+            "استمتع بفرصة لربح جوائز مذهلة مع عجلة الحظ من Worth!<br>كلما زادت قيمة مشترياتك، زادت فرصتك<br>
+            – كل 100 جنيه تمنحك نقطتين، وعندما تجمع 10 نقاط، يمكنك تجربة حظك بلفة واحدة. هل أنت مستعد للربح؟"
+        </p>
+        <p class="pointer">Your Points : @ViewBag.UserPoints</p>
+    </div>
+
+    <div id="wheelOfFortune" class="wheelOfFortune">
+        <canvas id="wheel" width="300" height="300"></canvas>
+        <div id="spin">SPIN</div>
+        <h3 class="head">Buy more, earn more <i class="fa fa-gift"></i></h3>
+    </div>
+
+
+
+
+    <form id="wheel-result-form" method="post" action="@Url.Action("Gift", "Home", new { area = "Customer" })">
+        <input type="hidden" name="productName" id="prize" value="">
+    </form>
+
+
+    <script>
+ function getRandomColor() {
+    const letters = '0123456789ABCDEF';
+    let color = '#';
+    for (let i = 0; i < 6; i++) {
+        color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+}
+
+const sectors = [];
+
+
+
+        @if (Model != null && Model.Any())
+        {
+            foreach (var item in Model)
+            {
+                <text>
+                        sectors.push({
+                            color: getRandomColor(),
+                        label: "@item.Name",
+                        text_color: 'black'
+                            });
+                </text>
+            }
+        }
+        else
+        {
+            // Add a default sector if the Model is empty
+            <text>
+                    sectors.push({
+                        color: getRandomColor(),
+                    label: "Not Value Yet",
+                    text_color: 'black'
+                    });
+            </text>
+        }
+
+
+const rand = (m, M) => Math.random() * (M - m) + m;
+const tot = sectors.length;
+const spinEl = document.querySelector('#spin');
+const ctx = document.querySelector('#wheel').getContext('2d');
+const tickSound = document.getElementById("tick-sound");
+const dia = ctx.canvas.width;
+const rad = dia / 2;
+const PI = Math.PI;
+const TAU = 2 * PI;
+const arc = TAU / sectors.length;
+const friction = 0.991;
+let angVel = 0;
+let ang = 0;
+let isSpinning = false;
+let stopSpinRequested = false;
+let userPoints = @ViewBag.UserPoints;
+let enableSpan = @ViewBag.EnableSpan.ToString().ToLower(); // Convert to lowercase for JS compatibility
+
+        const getIndex = () => {
+            if (sectors.length === 0) {
+                return 0; // Default to the first (and only) sector
+            }
+            return Math.floor(tot - (ang / TAU) * tot) % tot;
+        }
+
+function drawSector(sector, i) {
+    const ang = arc * i;
+    ctx.save();
+    ctx.beginPath();
+    ctx.fillStyle = sector.color;
+    ctx.moveTo(rad, rad);
+    ctx.arc(rad, rad, rad, ang, ang + arc);
+    ctx.lineTo(rad, rad);
+    ctx.fill();
+    ctx.translate(rad, rad);
+    ctx.rotate(ang + arc / 2);
+    ctx.textAlign = 'right';
+    ctx.fillStyle = sector.text_color;
+    ctx.font = 'bold 24px sans-serif';
+    ctx.fillText(sector.label, rad - 10, 10);
+    ctx.restore();
+}
+ 
+function rotate() {
+    const sector = sectors[getIndex()];
+    ctx.canvas.style.transform = `rotate(${ang - PI / 2}rad)`;
+    spinEl.textContent = !angVel ? 'SPIN' : sector.label;
+    spinEl.style.background = sector.color;
+
+    if (!angVel && stopSpinRequested) {
+        stopSpinRequested = false;
+        sendproductsToGift(sector.label);
+        console.log("sector name" + sector.label);
+    }
+}
+
+function playTickSound() {
+    if (angVel > 0.02) {
+        tickSound.currentTime = 0;
+        tickSound.play();
+        setTimeout(playTickSound, Math.max(50, 200 - angVel * 500));
+    }
+}
+
+function frame() {
+    if (!angVel) return;
+
+    angVel *= friction;
+
+    if (angVel < 0.002) {
+        angVel = 0;
+        if (!stopSpinRequested) {
+            stopSpinRequested = true;
+        }
+    }
+
+    ang += angVel;
+    ang %= TAU;
+    rotate();
+}
+
+function engine() {
+    frame();
+    requestAnimationFrame(engine);
+}
+
+sectors.forEach(drawSector);
+rotate();
+
+function init() {
+
+    engine();
+
+    spinEl.addEventListener('click', async () => {
+
+        if (!angVel) {
+            // Make API call to deduct points
+            const response = await fetch('@Url.Action("DeductPoints", "Home")', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'RequestVerificationToken': '@Html.AntiForgeryToken()' // Ensure CSRF protection
+                }
+        })
+                    if (!response.ok) {
+                        console.error("HTTP Error:", response.statusText);
+                        return;
+                    }
+                    const result = await response.json();
+
+                    if (!result.success) {
+                        alert(result.message);
+                        return;
+                    }
+
+
+            // Update points on UI and allow spin
+            userPoints = result.remainingPoints;
+            document.querySelector(".pointer").textContent = `Your Points: ${userPoints}`;
+            enableSpan = userPoints >= 10; // Recalculate if spinning is still allowed
+
+            angVel = rand(0.5, 0.8);
+            playTickSound();
+            stopSpinRequested = false;
+
+
+
+
+
+        }
+    });
+
+}
+
+        if (enableSpan && @((Model != null && Model.Any()).ToString().ToLower())) {
+            init();
+        }
+
+
+
+
+        function sendproductsToGift(productName) {
+                document.getElementById("prize").value =productName;
+            console.log(document.getElementById("prize").value);
+                document.getElementById("wheel-result-form").submit();
+        }
+
+
+</script>
+
+
+    <!-- <script src="/wheel/gift.js" defer></script> -->
+</body>
+</html>

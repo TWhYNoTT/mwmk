@@ -1,0 +1,69 @@
+﻿@*
+    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
+*@
+
+<body>
+    <div id="header-container"></div>
+    <section>
+        <div class="gift-container">
+            <div class="shadow"></div>
+            <div class="gift-box">
+                <div class="click">
+                </div>
+                <div class="your-Gift">
+                    <a href="@Url.Action("Details", "Home", new { ProductID = ViewBag.SelectedProduct.Id ,ProductClassification=ViewBag.ProductClassification})">
+                            <img src="~/@ViewBag.SelectedProduct.img[0]" width="120px" alt="Your Gift" />
+                        </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <script >
+        // gift.js
+
+        const click = document.querySelector('.click');
+        const giftBox = document.querySelector('.gift-box');
+        const shadow = document.querySelector('.shadow');
+        const giftContainer = document.querySelector('.gift-container');
+        const yourGift = document.querySelector('.your-Gift');
+
+        // حدث عند الضغط على الـ click لتفعيل بعض الحركات
+        click.addEventListener('click', () => {
+            if (click.classList.contains("click")) {
+                click.classList.add('active');
+                giftBox.classList.add('active');
+                shadow.classList.add('active');
+                giftContainer.classList.add('active');
+
+                setTimeout(() => {
+                    yourGift.classList.add('active');
+                    yourGift.classList.remove('active2');
+                }, 1000);
+            } else {
+                click.classList.remove('active');
+                giftBox.classList.remove('active');
+                shadow.classList.remove('active');
+                giftContainer.classList.remove('active');
+                yourGift.classList.remove('active');
+                yourGift.classList.add('active2');
+            }
+        });
+
+        // استلام الرسالة التي تحتوي على الجائزة
+        window.addEventListener("message", (event) => {
+            const prize = event.data.prize;
+            if (prize) {
+                const prizeElement = document.getElementById("prize-display");
+                if (prizeElement) {
+                    prizeElement.textContent = `Congratulations! You won ${prize} Click to See Details of your Gift`;
+                }
+            }
+        });
+
+    </script>
+    @section Styles {
+        <link href="@Url.Content("~/css/css/gift.css")" rel="stylesheet" />
+
+    }
+</body>

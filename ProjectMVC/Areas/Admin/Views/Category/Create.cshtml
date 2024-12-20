@@ -1,0 +1,58 @@
+﻿@model Category
+
+@{
+
+    ViewBag.PageTitle = "Category Managment";
+    ViewBag.CardTitle = "Create Category";
+    Layout = "_DashboradLayout";
+}
+
+
+<form  method="post" enctype="multipart/form-data">
+
+   <div class="mb-3">
+      <label asp-for="name"></label>
+      <input asp-for="name"  class="form-control"/>
+      <span asp-validation-for="name" class="text-danger"></span>
+  </div>
+
+    <div class="mb-3">
+        <label asp-for="description"></label>
+        <textarea id="default-editor" asp-for="description" class="form-control"></textarea>
+        <span asp-validation-for="description" class="text-danger"></span>
+    </div>
+
+
+    <div class="from-group">
+        <label asp-for="Image" class="control-label"></label>
+        <input type="file" name="file" id="imgfile" class="form-control" onchange="fillimg(event);" />
+    </div>
+
+    <div class="mb-3">
+        <input type="submit" class="btn btn-primary"  value="Create"/>
+        @* <input type="submit" class="btn btn-outline-primary" value="Back" asp-action="index" asp-controller="Category" /> *@
+        <a asp-action="index" asp-controller="Category" class="btn btn-outline-secondary">Cancel</a>
+    </div>
+
+</form>
+@* <script src="~/lib/jquery-validation/dist/jquery"></script>
+
+<script src="~/lib/jquery-validation/dist/jquery.validate.min.js"></script>
+<script src="~/lib/jquery-validation-unobtrusive/jquery.validate.unobtrusive.min.js"></script> *@
+
+@* لما بشغل الجزء بتاع البارشل  بيعمل 
+client SIde validation  *@
+
+
+ @section Scripts{
+    <partial name="_ValidationScriptsPartial"/>
+   
+    <script>
+        var fillimg = function (event) { 
+  
+                var imgholder = document.getElementById("imgfile");
+                imgholder.src = URL.createObjectURL(event.target.files[0])
+        
+        }
+    </script>
+}
